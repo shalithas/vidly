@@ -7,7 +7,5 @@ require("./startup/db")();
 require("./startup/config");
 require("./startup/validations");
 
-throw new Error('test un');
-
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));

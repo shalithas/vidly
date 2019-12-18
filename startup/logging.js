@@ -3,21 +3,23 @@ const winston = require("winston");
 require("winston-mongodb");
 
 module.exports = function() {
-  winston.add(new winston.transports.File({ filename: "logs/logfile.log" }));
-  winston.add(
-    new winston.transports.MongoDB({
-      db: "mongodb://localhost/vidly",
-      level: "error"
-    })
-  );
-  winston.exceptions.handle(
+  winston.handleExceptions(
     new winston.transports.Console({
       colorize: true,
       prettyPrint: true
     }),
-    new winston.transports.File({ filename: "logs/unhandledexceptions.log" })
+    new winston.transports.File({
+      filename: "logs/unhandled.log"
+    })
   );
+
   process.on("unhandledRejection", ex => {
     throw ex;
+  });
+
+  winston.add(winston.transports.File, { filename: "logs/logfile.log" });
+  winston.add(winston.transports.MongoDB, {
+    db: "mongodb://localhost/vidly",
+    level: "error"
   });
 };
